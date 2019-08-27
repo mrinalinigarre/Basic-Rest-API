@@ -3,7 +3,7 @@ const router = express.Router();
 const Employee = require('../models/names');
 
 //get the names from the db
-router.get('/names', function(req, res){
+router.get('/names', function(req, res, next){
   res.send({type:'GET'});
 });
 
@@ -16,12 +16,12 @@ router.post('/names', function(req, res, next){
 });
 
 //update the name in the db
-router.put('/names/:id', function(req, res){
+router.put('/names/:id', function(req, res, next){
   res.send({type:'PUT'});
 });
 
 //Delete the names from the db
-router.delete('/names/:id', function(req, res){
+router.delete('/names/:id', function(req, res, next){
   res.send({type:'DEELTE'});
 });
 
