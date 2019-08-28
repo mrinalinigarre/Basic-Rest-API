@@ -10,6 +10,7 @@ const app = express();
 mongoose.connect('mongodb://localhost/empname');
 mongoose.Promise = global.Promise;
 
+//parsing the body to retrieve data
 app.use(bodyParser.json());
 app.use('/api', require('./routes/api'));
 

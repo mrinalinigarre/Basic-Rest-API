@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Employee = require('../models/names');
+const Employee_Model = require('../models/names');
 
 //get the names from the db
 router.get('/names', function(req, res, next){
@@ -10,7 +10,7 @@ router.get('/names', function(req, res, next){
 //add a new name to the db
 router.post('/names', function(req, res, next){
   //sending data to the mongodb model
-  Employee.create(req.body).then(function(employee){
+  Employee_Model.create(req.body).then(function(employee){
     res.send(employee);
   }).catch(next);
 });
@@ -22,6 +22,9 @@ router.put('/names/:id', function(req, res, next){
 
 //Delete the names from the db
 router.delete('/names/:id', function(req, res, next){
+  Employee_Model.findByIdAndRemove({_id: req.params.id}).then(function(employee){
+    res.send(employee);
+  });
   res.send({type:'DEELTE'});
 });
 
