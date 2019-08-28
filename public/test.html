@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>EmployeeData</title>
+        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+        <link href="/styles.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+
+        <h1 class="title">Employees Data - REST API</h1>
+        <div id="homepage">
+            <h1>Find an Employee in your location</h1>
+            <div id="employees"></div>
+        </div>
+
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+        <script src="https://unpkg.com/react@15/dist/react.js"></script>
+        <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+
+        <!-- Create React Component -->
+        <script type="text/babel">
+        var Employee = React.createClass({
+            getInitialState: function(){
+                return({
+                    emmployee: []
+                });
+            },
+            render: function(){
+                var employees = this.state.employee;
+                employees = employees.map(function(employee, index){
+                    return(
+                        <li key={index}>
+                            <span className={employee.obj.available}></span>
+                            <span className="name">{employee.obj.name}</span>
+                            <span className="rank">{employee.obj.rank}</span>
+                            <span className="dist">{Math.floor(employee.dis / 1000)} km</span>
+                        </li>
+                    );
+                });
+                return(
+                    <div id="employee-container">
+                        <form id="search" onSubmit={this.handleSubmit}>
+                            <label>Enter your Latitude:</label>
+                            <input type="text" ref="lat" placeholder="latitude" required />
+                            <label>Enter your Longitude:</label>
+                            <input type="text" ref="lng" placeholder="longitude" required />
+                            <input type="submit" value="Find employees" />
+                        </form>
+                        <ul>{employee}</ul>
+                    </div>
+                );
+            },
+            handleSubmit: function(e){
+                e.preventDefault();
+                var lng = this.refs.lng.value;
+                var lat = this.refs.lat.value;
+                fetch('/api/names?lng=' + lng + '&lat=' + lat).then(function(data){
+                    return data.json();
+                }).then( json => {
+                    this.setState({
+                        employee: json
+                    });
+                    console.log(json);
+                });
+            }
+        });
+        ReactDOM.render(<Employee />, document.getElementById('employees'));
+        </script>
+    </body>
+</html>
