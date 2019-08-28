@@ -17,7 +17,11 @@ router.post('/names', function(req, res, next){
 
 //update the name in the db
 router.put('/names/:id', function(req, res, next){
-  res.send({type:'PUT'});
+  Employee_Model.findByIdAndUpdate({_id: req.params.id},req.body).then(function(){
+    Employee_Model.findOne({_id: req.params.id}).then(function(employee){
+      res.send(employee);
+    });
+  });
 });
 
 //Delete the names from the db
